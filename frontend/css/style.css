@@ -1,0 +1,344 @@
+/* ============================================================
+   InternTrack – Custom CSS (Bootstrap 5 overrides & extensions)
+   ============================================================ */
+
+/* ── CUSTOM PROPERTIES ── */
+:root {
+  --it-primary:       #4f46e5;
+  --it-primary-dark:  #3730a3;
+  --it-faculty:       #0891b2;
+  --it-faculty-dark:  #0e7490;
+  --it-success:       #059669;
+  --it-warning:       #d97706;
+  --it-danger:        #dc2626;
+  --it-body-bg:       #f8fafc;
+  --it-card-shadow:   0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+  --it-navbar-height: 60px;
+}
+
+/* ── GLOBAL ── */
+body { background-color: var(--it-body-bg); }
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Section vertical spacing */
+.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+
+/* ── NAVBAR ── */
+.it-navbar {
+  background: linear-gradient(135deg, var(--it-primary) 0%, #6d28d9 100%);
+  min-height: var(--it-navbar-height);
+  box-shadow: 0 2px 12px rgba(79,70,229,.25);
+}
+.it-navbar .navbar-brand { letter-spacing: -.3px; }
+.it-navbar .nav-link { font-size: .875rem; }
+
+/* Faculty brand color */
+.it-brand-faculty { color: var(--it-faculty); }
+
+/* ── DEMO BANNER ── */
+.it-demo-banner {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: .82rem;
+  border-bottom: 1px solid #fde68a;
+}
+.it-demo-banner code {
+  background: rgba(0,0,0,.08);
+  padding: .1rem .35rem;
+  border-radius: 4px;
+  font-size: .8rem;
+}
+
+/* ── HERO SECTION ── */
+.it-hero {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6d28d9 100%);
+  min-height: 560px;
+  position: relative;
+  overflow: hidden;
+}
+/* Ensure hero content sits above the ::before overlay */
+.it-hero > * {
+  position: relative;
+  z-index: 1;
+}
+.it-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;  /* Allow clicks to pass through the overlay */
+}
+.it-hero-badge .badge {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: .3px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,.2);
+}
+.it-hero h1 { letter-spacing: -1px; }
+
+/* ── SECTION LABEL ── */
+.it-section-label {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--it-primary);
+  background: #ede9fe;
+  padding: .3rem .85rem;
+  border-radius: 99px;
+}
+
+/* ── HOW IT WORKS – STEP CARDS ── */
+.it-step-card { transition: transform .2s ease, box-shadow .2s ease; }
+.it-step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.1) !important;
+}
+.it-step-num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--it-primary), #7c3aed);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.it-step-num--2 { background: linear-gradient(135deg, #0891b2, #0e7490); }
+.it-step-num--3 { background: linear-gradient(135deg, #059669, #047857); }
+
+/* ── FEATURE CARDS ── */
+.it-feature-card { transition: transform .2s ease, box-shadow .2s ease; }
+.it-feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.09) !important;
+}
+.it-feature-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: #ede9fe;
+  color: var(--it-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.it-feature-icon--green  { background: #d1fae5; color: var(--it-success); }
+.it-feature-icon--orange { background: #ffedd5; color: #ea580c; }
+.it-feature-icon--purple { background: #ede9fe; color: #7c3aed; }
+.it-feature-icon--teal   { background: #cffafe; color: var(--it-faculty); }
+.it-feature-icon--gold   { background: #fef3c7; color: var(--it-warning); }
+
+/* ── CTA STRIP ── */
+.it-cta-strip {
+  background: linear-gradient(135deg, var(--it-primary-dark) 0%, #4f46e5 100%);
+}
+
+/* ── FOOTER ── */
+.it-footer {
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+}
+
+/* ── AUTH SPLIT SCREEN ── */
+.it-auth-body { background: #f8fafc; margin: 0; }
+.it-split-screen {
+  display: flex;
+  min-height: 100vh;
+}
+.it-split-left {
+  width: 42%;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.it-split-left--student {
+  background: linear-gradient(160deg, #4f46e5 0%, #7c3aed 60%, #6d28d9 100%);
+}
+.it-split-left--faculty {
+  background: linear-gradient(160deg, #0891b2 0%, #0e7490 60%, #164e63 100%);
+}
+.it-split-left::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+}
+.it-feature-list li {
+  padding: .45rem 0;
+  font-size: .9rem;
+  opacity: .9;
+}
+.it-split-right {
+  flex: 1;
+  background: #fff;
+  overflow-y: auto;
+}
+
+/* ── AUTH DEMO HINT ── */
+.it-demo-hint {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.it-demo-hint code {
+  background: #e2e8f0;
+  padding: .1rem .35rem;
+  border-radius: 4px;
+  font-size: .8rem;
+  color: #334155;
+}
+
+/* ── FACULTY BUTTON ── */
+.btn-faculty {
+  background: linear-gradient(135deg, var(--it-faculty), var(--it-faculty-dark));
+  color: #fff;
+  border: none;
+}
+.btn-faculty:hover {
+  background: linear-gradient(135deg, var(--it-faculty-dark), #155e75);
+  color: #fff;
+}
+
+/* ── STAT CARDS ── */
+.it-stat-card {
+  border-radius: 12px !important;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.it-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.1) !important;
+}
+.it-stat-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.it-stat-icon--blue   { background: #eff6ff; color: #2563eb; }
+.it-stat-icon--green  { background: #f0fdf4; color: var(--it-success); }
+.it-stat-icon--yellow { background: #fffbeb; color: var(--it-warning); }
+.it-stat-icon--red    { background: #fef2f2; color: var(--it-danger); }
+.it-stat-icon--teal   { background: #ecfeff; color: var(--it-faculty); }
+.it-stat-icon--purple { background: #faf5ff; color: #7c3aed; }
+
+/* ── AVATAR CIRCLE ── */
+.it-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--it-primary), #7c3aed);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -.5px;
+}
+.it-avatar--sm {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--it-primary), #7c3aed);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── CARDS ── */
+.card { border-radius: 12px !important; }
+.card-header { border-radius: 12px 12px 0 0 !important; }
+
+/* ── REPORT CARDS – status left border ── */
+.it-report-pending  { border-left: 4px solid #f59e0b !important; }
+.it-report-approved { border-left: 4px solid #10b981 !important; }
+.it-report-rejected { border-left: 4px solid #ef4444 !important; }
+
+/* ── FILTER BUTTONS ── */
+.it-filter-btn { transition: all .15s ease; border-radius: 99px !important; }
+
+/* ── FORM CONTROLS ── */
+.form-control:focus, .form-select:focus {
+  border-color: var(--it-primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.15);
+}
+.input-group-text { border-color: #dee2e6; }
+.input-group .form-control:focus { z-index: 3; }
+
+/* ── TABLE ── */
+.table > :not(caption) > * > * { padding: .85rem 1rem; }
+
+/* ── EMPTY STATE ── */
+.py-6 { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb { font-size: .82rem; }
+.breadcrumb-item + .breadcrumb-item::before { color: #94a3b8; }
+
+/* ── TOAST ── */
+.toast { min-width: 280px; }
+
+/* ── CERTIFICATE BANNER ── */
+.it-cert-banner {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #86efac !important;
+}
+.it-cert-seal {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(251,191,36,.3);
+}
+
+/* ── ADMIN NAVBAR ── */
+.it-navbar-admin {
+  background: linear-gradient(135deg, #1e1b4b 0%, #dc2626 100%);
+  min-height: var(--it-navbar-height);
+  box-shadow: 0 2px 12px rgba(220,38,38,.3);
+}
+
+/* ── ADMIN SPLIT LEFT ── */
+.it-split-left--admin {
+  background: linear-gradient(160deg, #1e1b4b 0%, #dc2626 100%);
+}
+
+/* ── PURPLE (internships) ── */
+.text-purple  { color: #7c3aed !important; }
+.bg-purple    { background-color: #7c3aed !important; }
+.btn-purple   { background: #7c3aed; color: #fff; border: none; }
+.btn-purple:hover { background: #6d28d9; color: #fff; }
+
+/* ── PRINT ── */
+@media print {
+  .it-navbar, .btn, nav[aria-label="breadcrumb"] { display: none !important; }
+  .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 991.98px) {
+  .it-split-screen { flex-direction: column; }
+  .it-split-left { width: 100%; min-height: 220px; padding: 2rem !important; }
+  .it-split-left h2 { font-size: 1.4rem; }
+  .it-hero { min-height: 420px; }
+  .it-hero h1 { font-size: 2rem; }
+}
+@media (max-width: 575.98px) {
+  .it-hero h1 { font-size: 1.7rem; }
+  .it-stat-card .fs-2 { font-size: 1.6rem !important; }
+}

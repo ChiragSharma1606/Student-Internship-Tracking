@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InternTrack – Student Internship Tracking System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark it-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="index.html">
+        <i class="bi bi-mortarboard-fill me-2"></i>InternTrack
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+          <li class="nav-item"><a class="nav-link" href="#how-it-works">How it works</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="btn btn-outline-light btn-sm px-3" href="student_login.html">Student Login</a></li>
+          <li class="nav-item"><a class="btn btn-light btn-sm px-3 text-primary fw-semibold" href="teacher_login.html">Faculty Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DEMO CREDENTIALS BANNER -->
+  <div class="it-demo-banner text-center py-2 small">
+    <i class="bi bi-info-circle me-1"></i>
+    <strong>Demo:</strong>&nbsp;
+    Student: <code>student1 / student123</code> &nbsp;|&nbsp;
+    Faculty: <code>teacher1 / teacher123</code>
+  </div>
+
+  <!-- HERO -->
+  <section class="it-hero d-flex align-items-center">
+    <div class="container text-center text-white py-5">
+      <div class="it-hero-badge mb-4">
+        <span class="badge rounded-pill px-3 py-2 fs-6">
+          <i class="bi bi-stars me-1"></i> Internship Management, Simplified
+        </span>
+      </div>
+      <h1 class="display-3 fw-bold mb-4">
+        Track Every Step of<br class="d-none d-md-block"/>
+        Your Internship Journey
+      </h1>
+      <p class="lead mb-5 mx-auto opacity-75" style="max-width:600px;">
+        A unified platform for students to log weekly progress and for faculty to monitor,
+        approve reports, and issue completion certificates — all in one place.
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="student_login.html" class="btn btn-light btn-lg px-5 fw-semibold text-primary">
+          <i class="bi bi-person-fill me-2"></i>Student Portal
+        </a>
+        <a href="teacher_login.html" class="btn btn-outline-light btn-lg px-5 fw-semibold">
+          <i class="bi bi-person-badge me-2"></i>Faculty Portal
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-6 bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="it-section-label">Simple Process</span>
+        <h2 class="fw-bold mt-2">How InternTrack Works</h2>
+        <p class="text-muted mx-auto" style="max-width:500px;">
+          From internship assignment to final certification — managed seamlessly.
+        </p>
+      </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+          <div class="it-step-card card h-100 border-0 shadow-sm p-4 text-center">
+            <div class="it-step-num mx-auto mb-3">1</div>
+            <h5 class="fw-semibold mb-2">Get Assigned</h5>
+            <p class="text-muted small">Students are assigned to industry partners by faculty. All internship details are set up in the system.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="it-step-card card h-100 border-0 shadow-sm p-4 text-center">
+            <div class="it-step-num it-step-num--2 mx-auto mb-3">2</div>
+            <h5 class="fw-semibold mb-2">Submit Weekly Reports</h5>
+            <p class="text-muted small">Every week, students log their progress, learnings, and tasks. Faculty reviews and approves each submission.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="it-step-card card h-100 border-0 shadow-sm p-4 text-center">
+            <div class="it-step-num it-step-num--3 mx-auto mb-3">3</div>
+            <h5 class="fw-semibold mb-2">Get Certified</h5>
+            <p class="text-muted small">On successful completion, certificates are issued and tracked in the system for future reference.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="py-6">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="it-section-label">Everything You Need</span>
+        <h2 class="fw-bold mt-2">Platform Features</h2>
+        <p class="text-muted mx-auto" style="max-width:500px;">
+          Built for both students and faculty with everything needed for smooth internship management.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="it-feature-card card h-100 border-0 shadow-sm p-4">
+            <div class="it-feature-icon mb-3"><i class="bi bi-building"></i></div>
+            <h6 class="fw-semibold mb-2">Industry Management</h6>
+            <p class="text-muted small mb-0">Track company details, contact persons, and internship domains all in one place.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="it-feature-card card h-100 border-0 shadow-sm p-4">
+            <div class="it-feature-icon it-feature-icon--green mb-3"><i class="bi bi-journal-check"></i></div>
+            <h6 class="fw-semibold mb-2">Weekly Progress Reports</h6>
+            <p class="text-muted small mb-0">Structured weekly reporting keeps students accountable and faculty informed.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="it-feature-card card h-100 border-0 shadow-sm p-4">
+            <div class="it-feature-icon it-feature-icon--orange mb-3"><i class="bi bi-check2-circle"></i></div>
+            <h6 class="fw-semibold mb-2">Faculty Approvals</h6>
+            <p class="text-muted small mb-0">Faculty can approve or reject reports with a single click, with full audit trail.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="it-feature-card card h-100 border-0 shadow-sm p-4">
+            <div class="it-feature-icon it-feature-icon--purple mb-3"><i class="bi bi-bar-chart-line"></i></div>
+            <h6 class="fw-semibold mb-2">Progress Analytics</h6>
+            <p class="text-muted small mb-0">At-a-glance statistics for approved, pending, and rejected reports per student.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="it-feature-card card h-100 border-0 shadow-sm p-4">
+            <div class="it-feature-icon it-feature-icon--teal mb-3"><i class="bi bi-file-earmark-text"></i></div>
+            <h6 class="fw-semibold mb-2">Final Report Tracking</h6>
+            <p class="text-muted small mb-0">End-of-internship report submissions tracked and stored for institutional records.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="it-feature-card card h-100 border-0 shadow-sm p-4">
+            <div class="it-feature-icon it-feature-icon--gold mb-3"><i class="bi bi-award"></i></div>
+            <h6 class="fw-semibold mb-2">Certificate Issuance</h6>
+            <p class="text-muted small mb-0">Completion certificates are tracked within the system and linked to student records.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN ACCESS STRIP -->
+  <section class="py-4 bg-dark">
+    <div class="container text-center">
+      <span class="text-muted small me-3">System Administrator?</span>
+      <a href="admin_login.html" class="btn btn-outline-danger btn-sm px-4">
+        <i class="bi bi-shield-lock me-1"></i>Admin Panel
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="it-cta-strip py-5 text-white text-center">
+    <div class="container">
+      <h3 class="fw-bold mb-3">Ready to get started?</h3>
+      <p class="opacity-75 mb-4">Log in to your portal and start tracking your internship today.</p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="student_login.html" class="btn btn-light px-4 fw-semibold text-primary">Student Login</a>
+        <a href="teacher_login.html" class="btn btn-outline-light px-4 fw-semibold">Faculty Login</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="it-footer py-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 mb-2 mb-md-0">
+          <span class="fw-bold text-white"><i class="bi bi-mortarboard-fill me-2"></i>InternTrack</span>
+          <span class="text-muted ms-3 small">&copy; 2026 Student Internship Tracking System</span>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <span class="text-muted small">Built with Flask &amp; Bootstrap 5</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

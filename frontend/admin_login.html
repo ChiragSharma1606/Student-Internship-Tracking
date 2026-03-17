@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login – InternTrack</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="it-auth-body">
+<div class="it-split-screen">
+
+  <!-- LEFT PANEL -->
+  <div class="it-split-left it-split-left--admin d-none d-lg-flex flex-column justify-content-between p-5">
+    <a href="index.html" class="text-white text-decoration-none">
+      <span class="fs-4 fw-bold"><i class="bi bi-mortarboard-fill me-2"></i>InternTrack</span>
+    </a>
+    <div class="text-white">
+      <div class="mb-3"><i class="bi bi-shield-lock-fill" style="font-size:3rem;opacity:.9;"></i></div>
+      <h2 class="fw-bold display-6 mb-3">Full control.<br/>One dashboard.</h2>
+      <p class="opacity-75 mb-4">Manage every aspect of the internship system — users, companies, assignments, and more.</p>
+      <ul class="list-unstyled it-feature-list">
+        <li><i class="bi bi-check-circle-fill me-2"></i>Add &amp; manage students and faculty</li>
+        <li><i class="bi bi-check-circle-fill me-2"></i>Manage industry / company records</li>
+        <li><i class="bi bi-check-circle-fill me-2"></i>Assign internships to students</li>
+        <li><i class="bi bi-check-circle-fill me-2"></i>Full system overview &amp; statistics</li>
+      </ul>
+    </div>
+    <p class="text-white opacity-50 small mb-0">&copy; 2026 InternTrack</p>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="it-split-right d-flex align-items-center justify-content-center p-4">
+    <div class="w-100" style="max-width:420px;">
+      <a href="index.html" class="text-muted small text-decoration-none d-inline-flex align-items-center mb-4">
+        <i class="bi bi-arrow-left me-1"></i> Back to Home
+      </a>
+      <div class="d-lg-none mb-4">
+        <span class="fs-5 fw-bold text-danger"><i class="bi bi-mortarboard-fill me-2"></i>InternTrack</span>
+      </div>
+      <h3 class="fw-bold mb-1">Admin Panel 🔐</h3>
+      <p class="text-muted mb-4">Sign in with your administrator credentials</p>
+
+      <div id="errorMsg" class="alert alert-danger d-none small py-2" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+        <span id="errorText"></span>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="mb-3">
+          <label for="username" class="form-label fw-medium">Username</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-shield-lock text-muted"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" id="username"
+                   placeholder="e.g. admin" required autocomplete="username"/>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label fw-medium">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+            <input type="password" class="form-control border-start-0 ps-0" id="password"
+                   placeholder="Enter admin password" required autocomplete="current-password"/>
+            <button type="button" class="input-group-text bg-light" id="togglePwd" tabindex="-1">
+              <i class="bi bi-eye text-muted" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-danger w-100 py-2 fw-semibold" id="submitBtn">
+          <i class="bi bi-shield-lock me-2"></i>Sign In as Admin
+        </button>
+      </form>
+
+      <div class="it-demo-hint mt-4 p-3 rounded-3">
+        <p class="small mb-1 fw-semibold text-muted">Demo Credentials</p>
+        <p class="small mb-0">Username: <code>admin</code> &nbsp;|&nbsp; Password: <code>admin123</code></p>
+      </div>
+
+      <p class="text-center text-muted small mt-4">
+        <a href="index.html" class="text-decoration-none fw-medium">← Back to portal selection</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.getElementById('togglePwd').addEventListener('click', function () {
+    const pwd  = document.getElementById('password');
+    const icon = document.getElementById('eyeIcon');
+    pwd.type   = pwd.type === 'password' ? 'text' : 'password';
+    icon.className = pwd.type === 'password' ? 'bi bi-eye text-muted' : 'bi bi-eye-slash text-muted';
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn     = document.getElementById('submitBtn');
+    const errDiv  = document.getElementById('errorMsg');
+    const errText = document.getElementById('errorText');
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    errDiv.classList.add('d-none');
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Signing in...';
+    btn.disabled  = true;
+
+    try {
+      const res = await apiPost('/api/login', { username, password, role: 'admin' });
+      if (res.status === 'success') {
+        sessionStorage.setItem('user', JSON.stringify(res.data));
+        window.location.href = 'admin_dashboard.html';
+      } else {
+        errText.textContent = res.message || 'Invalid credentials.';
+        errDiv.classList.remove('d-none');
+      }
+    } catch (err) {
+      errText.textContent = 'Unable to connect to server. Is the backend running?';
+      errDiv.classList.remove('d-none');
+    } finally {
+      btn.innerHTML = '<i class="bi bi-shield-lock me-2"></i>Sign In as Admin';
+      btn.disabled  = false;
+    }
+  });
+</script>
+</body>
+</html>

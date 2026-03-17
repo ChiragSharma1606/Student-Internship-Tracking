@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Report – InternTrack</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark it-navbar sticky-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand fw-bold" href="index.html">
+        <i class="bi bi-mortarboard-fill me-2"></i>InternTrack
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+          <li class="nav-item">
+            <span class="nav-link text-white-50 small" id="navUser"></span>
+          </li>
+          <li class="nav-item">
+            <a href="student_dashboard.html" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-house me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="view_reports.html" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-journal-text me-1"></i>My Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <button onclick="logout()" class="btn btn-danger btn-sm">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid px-4 py-4">
+
+    <!-- BREADCRUMB -->
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a href="student_dashboard.html" class="text-decoration-none">Dashboard</a></li>
+        <li class="breadcrumb-item active">Submit Report</li>
+      </ol>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="mb-4">
+      <h4 class="fw-bold mb-0">Submit Weekly Report</h4>
+      <p class="text-muted small mb-0">Document your internship activities and learnings for the week</p>
+    </div>
+
+    <!-- INTERNSHIP SUMMARY -->
+    <div id="internshipSummary" class="card border-0 shadow-sm mb-4 d-none">
+      <div class="card-body py-3">
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-building text-primary"></i>
+            <span class="small fw-medium" id="sCompany">–</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-code-slash text-primary"></i>
+            <span class="small fw-medium" id="sDomain">–</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-calendar-range text-primary"></i>
+            <span class="small fw-medium" id="sPeriod">–</span>
+          </div>
+          <span id="internStatusBadge" class="badge">–</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingMsg" class="text-center py-4">
+      <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+      <span class="text-muted small">Loading internship info...</span>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- MAIN FORM (col-lg-8) -->
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-bottom py-3">
+            <h6 class="fw-semibold mb-0">
+              <i class="bi bi-pencil-square me-2 text-primary"></i>Weekly Progress Report
+            </h6>
+          </div>
+          <div class="card-body p-4">
+
+            <div id="successMsg" class="alert alert-success d-none small" role="alert">
+              <i class="bi bi-check-circle-fill me-2"></i><span id="successText"></span>
+            </div>
+            <div id="errorMsg" class="alert alert-danger d-none small" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i><span id="errorText"></span>
+            </div>
+
+            <form id="reportForm" novalidate>
+              <div class="mb-4">
+                <label for="weekNo" class="form-label fw-medium">Week Number</label>
+                <input type="number" class="form-control" id="weekNo" min="1" max="52"
+                       placeholder="e.g. 4" required style="max-width:160px;"/>
+                <div class="form-text">Enter the week number for this report (1–52)</div>
+              </div>
+
+              <div class="mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <label for="reportText" class="form-label fw-medium mb-0">Weekly Progress</label>
+                  <span class="text-muted small"><span id="charCount">0</span> characters</span>
+                </div>
+                <textarea class="form-control" id="reportText" rows="9"
+                  placeholder="Describe your activities, learnings, tasks completed, challenges faced, and plans for next week..."
+                  required minlength="20"></textarea>
+                <div class="form-text">Minimum 20 characters. Be detailed about your work this week.</div>
+              </div>
+
+              <div class="d-flex align-items-center gap-3">
+                <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                  <i class="bi bi-send me-2"></i>Submit Report
+                </button>
+                <a href="student_dashboard.html" class="btn btn-outline-secondary px-4">Cancel</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR (col-lg-4) -->
+      <div class="col-lg-4 d-flex flex-column gap-4">
+
+        <!-- Tips Card -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-bottom py-3">
+            <h6 class="fw-semibold mb-0"><i class="bi bi-lightbulb me-2 text-warning"></i>Writing Tips</h6>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-0 small">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-1-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                <span class="text-muted">List the specific tasks you worked on this week.</span>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-2-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                <span class="text-muted">Mention any new tools, technologies, or concepts you learned.</span>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-3-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                <span class="text-muted">Describe challenges faced and how you resolved them.</span>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-4-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                <span class="text-muted">Include collaboration activities or team meetings.</span>
+              </li>
+              <li class="d-flex gap-2 mb-0">
+                <i class="bi bi-5-circle-fill text-primary mt-1 flex-shrink-0"></i>
+                <span class="text-muted">Mention your goals and plan for next week.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recent Submissions -->
+        <div class="card border-0 shadow-sm" id="recentCard">
+          <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+            <h6 class="fw-semibold mb-0"><i class="bi bi-clock-history me-2 text-muted"></i>Recent Submissions</h6>
+            <a href="view_reports.html" class="btn btn-link btn-sm p-0 text-decoration-none small">View all →</a>
+          </div>
+          <div id="recentList" class="list-group list-group-flush">
+            <div class="list-group-item text-center text-muted small py-3">
+              <span class="spinner-border spinner-border-sm me-1"></span> Loading...
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /sidebar -->
+    </div><!-- /row -->
+  </div>
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1100" id="toastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    requireAuth('student');
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    document.getElementById('navUser').innerHTML = `<i class="bi bi-person-circle me-1"></i>${user.username || ''}`;
+
+    // Live character count
+    document.getElementById('reportText').addEventListener('input', function () {
+      document.getElementById('charCount').textContent = this.value.length;
+    });
+
+    async function loadPageData() {
+      try {
+        const [dashRes, progRes] = await Promise.all([
+          apiGet('/api/student/dashboard'),
+          apiGet('/api/student/progress')
+        ]);
+
+        // Internship summary
+        if (dashRes.status === 'success' && dashRes.data.internship) {
+          const intern = dashRes.data.internship;
+          document.getElementById('sCompany').textContent = intern.company_name;
+          document.getElementById('sDomain').textContent  = intern.domain;
+          document.getElementById('sPeriod').textContent  =
+            `${formatDate(intern.start_date)} – ${formatDate(intern.end_date)}`;
+          const badge = document.getElementById('internStatusBadge');
+          badge.textContent = intern.status.charAt(0).toUpperCase() + intern.status.slice(1);
+          badge.className   = intern.status === 'completed'
+            ? 'badge bg-success' : 'badge bg-warning text-dark';
+          document.getElementById('internshipSummary').classList.remove('d-none');
+
+          // Pre-fill next week number
+          if (dashRes.data.progress_stats && dashRes.data.progress_stats.total > 0) {
+            document.getElementById('weekNo').value = dashRes.data.progress_stats.total + 1;
+          } else {
+            document.getElementById('weekNo').value = 1;
+          }
+        }
+
+        // Recent reports
+        const recentList = document.getElementById('recentList');
+        if (progRes.status === 'success' && progRes.data.progress.length > 0) {
+          const recent = [...progRes.data.progress].reverse().slice(0, 3);
+          recentList.innerHTML = recent.map(p => {
+            const badgeCls = p.status === 'approved' ? 'bg-success'
+              : p.status === 'rejected' ? 'bg-danger' : 'bg-warning text-dark';
+            return `
+              <div class="list-group-item px-3 py-3">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="fw-medium small">Week ${p.week_no}</span>
+                  <span class="badge ${badgeCls} small">${p.status.charAt(0).toUpperCase()+p.status.slice(1)}</span>
+                </div>
+                <p class="text-muted small mb-1" style="font-size:.8rem;">${p.report.substring(0,90)}${p.report.length>90?'…':''}</p>
+                <span class="text-muted" style="font-size:.75rem;">${formatDate(p.submitted_at)}</span>
+              </div>`;
+          }).join('');
+        } else {
+          recentList.innerHTML = `<div class="list-group-item text-muted small text-center py-3">No submissions yet.</div>`;
+        }
+
+        document.getElementById('loadingMsg').classList.add('d-none');
+
+      } catch (err) {
+        document.getElementById('loadingMsg').classList.add('d-none');
+        const errText = document.getElementById('errorText');
+        const errDiv  = document.getElementById('errorMsg');
+        errText.textContent = 'Failed to load internship data.';
+        errDiv.classList.remove('d-none');
+      }
+    }
+
+    document.getElementById('reportForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const btn        = document.getElementById('submitBtn');
+      const successDiv = document.getElementById('successMsg');
+      const successTxt = document.getElementById('successText');
+      const errDiv     = document.getElementById('errorMsg');
+      const errText    = document.getElementById('errorText');
+      const weekNo     = parseInt(document.getElementById('weekNo').value);
+      const report     = document.getElementById('reportText').value.trim();
+
+      successDiv.classList.add('d-none');
+      errDiv.classList.add('d-none');
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
+      btn.disabled  = true;
+
+      try {
+        const res = await apiPost('/api/student/submit-report', { week_no: weekNo, report });
+        if (res.status === 'success') {
+          successTxt.textContent = res.message;
+          successDiv.classList.remove('d-none');
+          document.getElementById('reportForm').reset();
+          document.getElementById('charCount').textContent = '0';
+          loadPageData();
+          showToast(res.message, 'success');
+        } else {
+          errText.textContent = res.message || 'Failed to submit report.';
+          errDiv.classList.remove('d-none');
+        }
+      } catch (err) {
+        errText.textContent = 'Server error. Please try again.';
+        errDiv.classList.remove('d-none');
+      } finally {
+        btn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Report';
+        btn.disabled  = false;
+      }
+    });
+
+    loadPageData();
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+# ══════════════════════════════════════
+# InternTrack – Root .gitignore
+# ══════════════════════════════════════
+
+# ── Python / Backend ─────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+*.egg-info/
+dist/
+build/
+*.whl
+venv/
+env/
+.venv/
+ENV/
+
+# ── Database (contains live data) ────
+backend/database.db
+
+# ── Node / Frontend ───────────────────
+frontend/interntrack-react/node_modules/
+frontend/interntrack-react/dist/
+frontend/interntrack-react/.vite/
+frontend/interntrack-react/dist-ssr/
+
+# ── Old HTML frontend (optional) ──────
+# Uncomment if you don't want to push old HTML files:
+# frontend/*.html
+# frontend/css/
+# frontend/js/
+
+# ── Environment Variables ─────────────
+.env
+.env.local
+.env.production
+backend/.env
+
+# ── IDE / Editor ─────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ───────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────
+*.log
+logs/
+npm-debug.log*
+
+# ── Uploads / Generated Files ────────
+backend/uploads/
+backend/reports/
+backend/certificates/
+
+# ── Temp files ───────────────────────
+tmp_rovodev_*

@@ -1,0 +1,48 @@
+# ── Python ──────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ── Virtual Environment ──────────────
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# ── Database ─────────────────────────
+# Exclude the live database (contains user data)
+database.db
+
+# ── Environment Variables ─────────────
+.env
+.env.local
+.env.production
+
+# ── IDE / Editor ─────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ───────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────
+*.log
+logs/
+
+# ── Uploads / Generated Files ────────
+uploads/
+reports/
+certificates/
