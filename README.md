@@ -71,7 +71,7 @@ You need **two terminals** — one for the backend, one for the frontend.
 ```bash
 # Terminal 1 – Backend
 cd backend
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 python app.py
 ```
 
