@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OS Synchronization Simulator</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: Arial, sans-serif; background: #0f172a;
+      color: #e5e7eb; line-height: 1.5;
+    }
+    header { padding: 28px 18px; text-align: center; background: #111c33; }
+    header h1 { margin: 0 0 6px; color: #93c5fd; }
+    header p { margin: 0; color: #cbd5e1; }
+    main { max-width: 1050px; margin: 24px auto; padding: 0 16px 30px; }
+    .controls, .card {
+      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+      padding: 18px; margin-bottom: 18px;
+    }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    button {
+      border: 0; border-radius: 8px; padding: 10px 13px; cursor: pointer;
+      background: #334155; color: #f8fafc; font-weight: 600;
+    }
+    button:hover { background: #475569; }
+    button.selected { background: #2563eb; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .actions button:first-child { background: #15803d; }
+    .actions button:nth-child(2) { background: #b45309; }
+    .actions button:nth-child(3) { background: #475569; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .process {
+      border: 1px solid #475569; border-radius: 9px; padding: 13px;
+      background: #111827; min-height: 88px;
+    }
+    .process h3 { margin: 0 0 7px; font-size: 1rem; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: .86rem; background: #475569; }
+    .badge.active { background: #166534; }
+    .badge.wait { background: #92400e; }
+    #log { max-height: 250px; overflow: auto; padding-left: 22px; }
+    #log li { margin: 5px 0; }
+    .muted { color: #cbd5e1; }
+    footer { text-align: center; color: #94a3b8; padding: 18px; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>OS Synchronization Simulator</h1>
+  <p>Interactive visual demonstrations of Readers–Writers and Dining Philosophers.</p>
+</header>
+
+<main>
+  <section class="controls">
+    <h2>Choose a simulation</h2>
+    <div class="tabs" role="group" aria-label="Simulation selection">
+      <button class="selected" data-mode="rw-semaphore">Readers–Writers · Semaphore</button>
+      <button data-mode="rw-monitor">Readers–Writers · Monitor</button>
+      <button data-mode="dp-semaphore">Dining Philosophers · Semaphore</button>
+      <button data-mode="dp-monitor">Dining Philosophers · Monitor</button>
+    </div>
+    <p id="description" class="muted"></p>
+    <div class="actions">
+      <button id="start">▶ Start / Resume</button>
+      <button id="pause">Ⅱ Pause</button>
+      <button id="reset">↻ Reset</button>
+      <button id="step">Step once</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 id="simTitle">Readers–Writers Problem — Semaphore</h2>
+    <p id="sharedValue">Shared value: 0 · Active readers: 0 · Writer: idle</p>
+    <div id="visual" class="grid"></div>
+  </section>
+
+  <section class="card">
+    <h2>Execution log</h2>
+    <ol id="log" aria-live="polite"></ol>
+  </section>
+  <p class="muted">Educational visualization only. It illustrates the concepts and is not a real operating-system scheduler.</p>
+</main>
+<footer>OS Synchronization Project</footer>
+
+<script>
+(() => {
+  const labels = {
+    "rw-semaphore": ["Readers–Writers Problem — Semaphore", "Multiple readers may read together; a writer needs exclusive access. This is a conceptual semaphore-based demonstration."],
+    "rw-monitor": ["Readers–Writers Problem — Monitor", "A monitor-style demonstration of readers sharing access while writers require exclusive access."],
+    "dp-semaphore": ["Dining Philosophers Problem — Semaphore", "Five philosophers alternate between thinking, waiting for forks, and eating. Forks cannot be shared by neighbours."],
+    "dp-monitor": ["Dining Philosophers Problem — Monitor", "A monitor-style demonstration of five philosophers requesting and releasing their adjacent forks."]
+  };
+
+  let mode = "rw-semaphore", timer = null, tick = 0, value = 0, events = [];
+  let readers, writer, philosophers, forks;
+
+  const $ = id => document.getElementById(id);
+  const log = message => {
+    events.unshift(new Date().toLocaleTimeString() + " — " + message);
+    events = events.slice(0, 40);
+    $("log").innerHTML = events.map(x => `<li>${escapeHtml(x)}</li>`).join("");
+  };
+  const escapeHtml = s => s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+  function initState() {
+    tick = 0; value = 0; events = [];
+    readers = Array.from({length: 3}, (_, i) => ({id: i + 1, state: "Idle"}));
+    writer = "Idle";
+    philosophers = Array.from({length: 5}, (_, i) => ({id: i + 1, state: "Thinking"}));
+    forks = Array(5).fill(false);
+    render();
+    log("Simulation ready.");
+  }
+
+  function render() {
+    $("simTitle").textContent = labels[mode][0];
+    $("description").textContent = labels[mode][1];
+    document.querySelectorAll("[data-mode]").forEach(b => b.classList.toggle("selected", b.dataset.mode === mode));
+    const visual = $("visual");
+    visual.innerHTML = "";
+
+    if (mode.startsWith("rw")) {
+      const active = readers.filter(r => r.state === "Reading").length;
+      $("sharedValue").textContent = `Shared value: ${value} · Active readers: ${active} · Writer: ${writer.toLowerCase()}`;
+      readers.forEach(r => {
+        const cls = r.state === "Reading" ? "active" : r.state === "Waiting" ? "wait" : "";
+        visual.insertAdjacentHTML("beforeend", `<div class="process"><h3>Reader ${r.id}</h3><span class="badge ${cls}">${r.state}</span><p class="muted">Reads shared data</p></div>`);
+      });
+      const cls = writer === "Writing" ? "active" : writer === "Waiting" ? "wait" : "";
+      visual.insertAdjacentHTML("beforeend", `<div class="process"><h3>Writer</h3><span class="badge ${cls}">${writer}</span><p class="muted">Needs exclusive access to update data</p></div>`);
+    } else {
+      $("sharedValue").textContent = "Five philosophers · Five forks · Neighbouring philosophers cannot eat at the same time.";
+      philosophers.forEach((p, i) => {
+        const cls = p.state === "Eating" ? "active" : p.state === "Waiting" ? "wait" : "";
+        visual.insertAdjacentHTML("beforeend", `<div class="process"><h3>Philosopher ${p.id}</h3><span class="badge ${cls}">${p.state}</span><p class="muted">Fork ${i + 1}: ${forks[i] ? "in use" : "free"} · Fork ${(i + 1) % 5 + 1}: ${forks[(i + 1) % 5] ? "in use" : "free"}</p></div>`);
+      });
+    }
+  }
+
+  function rwStep() {
+    const activeReaders = readers.filter(r => r.state === "Reading").length;
+    if (writer === "Writing") {
+      writer = "Idle";
+      log("Writer finishes writing and releases exclusive access.");
+    } else if (writer === "Waiting" && activeReaders === 0) {
+      writer = "Writing";
+      value++;
+      log(`Writer acquires exclusive access and updates shared value to ${value}.`);
+    } else {
+      const r = readers[tick % readers.length];
+      if (r.state === "Reading") {
+        r.state = "Idle";
+        log(`Reader ${r.id} finishes reading.`);
+      } else if (writer !== "Writing" && writer !== "Waiting") {
+        r.state = "Reading";
+        log(`Reader ${r.id} starts reading shared value ${value}.`);
+      } else if (writer === "Idle") {
+        writer = "Waiting";
+        log("Writer requests exclusive access.");
+      } else {
+        log(`Reader ${r.id} waits because the writer has requested access.`);
+      }
+      if (tick % 4 === 3 && writer === "Idle") {
+        writer = "Waiting";
+        log("Writer requests exclusive access.");
+      }
+    }
+    tick++;
+    render();
+  }
+
+  function dpStep() {
+    const i = tick % 5, p = philosophers[i], left = i, right = (i + 1) % 5;
+    if (p.state === "Eating") {
+      forks[left] = false; forks[right] = false; p.state = "Thinking";
+      log(`Philosopher ${i + 1} finishes eating and releases both forks.`);
+    } else if (p.state === "Thinking" || p.state === "Waiting") {
+      if (!forks[left] && !forks[right]) {
+        forks[left] = true; forks[right] = true; p.state = "Eating";
+        log(`Philosopher ${i + 1} acquires both forks and starts eating.`);
+      } else {
+        p.state = "Waiting";
+        log(`Philosopher ${i + 1} waits because a fork is in use.`);
+      }
+    }
+    tick++;
+    render();
+  }
+
+  function step() {
+    if (mode.startsWith("rw")) rwStep();
+    else dpStep();
+  }
+  function pause() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+  function start() {
+    pause();
+    timer = setInterval(step, 1100);
+  }
+
+  document.querySelectorAll("[data-mode]").forEach(button => {
+    button.addEventListener("click", () => {
+      pause();
+      mode = button.dataset.mode;
+      initState();
+    });
+  });
+  $("start").addEventListener("click", start);
+  $("pause").addEventListener("click", pause);
+  $("reset").addEventListener("click", () => { pause(); initState(); });
+  $("step").addEventListener("click", () => { pause(); step(); });
+
+  initState();
+})();
+</script>
+</body>
+</html>
